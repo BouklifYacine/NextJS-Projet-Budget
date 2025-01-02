@@ -37,6 +37,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         throw new Error (" Utilisateur introuvable")
       }
 
+      if (!user.password) {
+        throw new Error("Ce compte n'a pas de mot de passe. Veuillez utiliser un autre mode de connexion.");
+      }
+
       const motdepasse = await bcrypt.compare(password, user.password)
 
       if(!motdepasse){

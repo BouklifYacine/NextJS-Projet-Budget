@@ -5,8 +5,8 @@ import { prisma } from "@/prisma";
 
 export async function POST(request: NextRequest) {
     
-  const { email, password, pseudo, age } = await request.json();
-  const validation = SchemaInscription.safeParse({ email, password ,  pseudo, age });
+  const { email, password, name, age } = await request.json();
+  const validation = SchemaInscription.safeParse({ email, password ,  name, age });
   if (!validation.success) {
     return NextResponse.json(
         { message: validation.error.errors[0].message }, 
@@ -27,12 +27,12 @@ export async function POST(request: NextRequest) {
     data: {
       email,
       password: motdepasse,
-      pseudo, 
+      name, 
       age
     },
   });
 
   return NextResponse.json({
-    pseudo : nouvelutilisateur.pseudo
+    name : nouvelutilisateur.name
   });
 }

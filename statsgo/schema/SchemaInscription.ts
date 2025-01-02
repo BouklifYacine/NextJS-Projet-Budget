@@ -15,7 +15,7 @@ const SchemaInscription = z.object({
         .min(10, "Vous devez avoir 10 ans minimum")
         .max(99, "Age trop haut"),
         
-    pseudo: z.string({message: "Vous devez mettre un pseudo"})
+        name: z.string({message: "Vous devez mettre un pseudo"})
         .min(1, {message: "Vous devez mettre un pseudo"})
         .min(6, "Le pseudo doit faire au minimum 6 caractères")
         .trim()
