@@ -2,9 +2,9 @@
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT,
-    "pseudo" TEXT NOT NULL,
-    "age" INTEGER NOT NULL,
-    "password" TEXT NOT NULL,
+    "pseudo" TEXT,
+    "age" INTEGER,
+    "password" TEXT,
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,

@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   const validation = SchemaInscription.safeParse({ email, password ,  pseudo, age });
   if (!validation.success) {
     return NextResponse.json(
-        { message: validation.error.errors[0].message }, // Renvoyer un objet JSON
+        { message: validation.error.errors[0].message }, 
         { status: 400 }
     );
 }
