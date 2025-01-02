@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from "axios"
-import { signIn } from '@/auth';
 import SchemaInscription from '@/schema/SchemaInscription';
 import { useRouter } from 'next/navigation';
 import Boutongoogle from '@/components/boutongoogle';
@@ -20,7 +19,7 @@ const AuthForm = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors,isSubmitting  },
+    formState: { errors,isSubmitting},
   } = useForm<Schema>({
     resolver: zodResolver(SchemaInscription),
   });
@@ -125,13 +124,13 @@ const AuthForm = () => {
             </div>
           </div>
 
-          <Boutongoogle></Boutongoogle>
+       <Boutongoogle></Boutongoogle>
 
-          <BoutonGithub></BoutonGithub>
+       <BoutonGithub></BoutonGithub>
 
           <p className="text-center text-sm text-gray-600 mt-4">
             Déjà inscrit?{' '}
-            <Link href="/login" className="text-blue-600 hover:text-blue-700">
+            <Link href="/connexion" className="text-blue-600 hover:text-blue-700">
               Se connecter
             </Link>
           </p>
