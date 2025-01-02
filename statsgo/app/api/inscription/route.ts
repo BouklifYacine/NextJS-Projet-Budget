@@ -5,10 +5,14 @@ import { prisma } from "@/prisma";
 
 export async function POST(request: NextRequest) {
     
-  const { email, password } = await request.json();
-  const validation = SchemaInscription.safeParse({ email, password });
-  if (!validation.success)
-    return NextResponse.json(validation.error.format(), { status: 400 });
+  const { email, password, pseudo, age } = await request.json();
+  const validation = SchemaInscription.safeParse({ email, password ,  pseudo, age });
+  if (!validation.success) {
+    return NextResponse.json(
+        { message: validation.error.errors[0].message }, // Renvoyer un objet JSON
+        { status: 400 }
+    );
+}
 
   const user = await prisma.user.findUnique({
     where: { email },
@@ -23,10 +27,12 @@ export async function POST(request: NextRequest) {
     data: {
       email,
       password: motdepasse,
+      pseudo, 
+      age
     },
   });
 
   return NextResponse.json({
-    email: nouvelutilisateur.email,
+    pseudo : nouvelutilisateur.pseudo
   });
 }
