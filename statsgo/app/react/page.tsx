@@ -5,12 +5,7 @@ import useYacine from '../store/store'
 const Exercice = () => {
   
    const [rendu, setRendu] = useState(false)
-   const [tableau, setTableau] = useState([
-       {id: 1, prix: 10, nom: "yacine"},
-       {id: 2, prix: 20, nom: "norhane"}, 
-       {id: 3, prix: 35, nom: "yachane"}
-   ])
-
+ 
    const CalculMoyenne = () => {
        const moyenne = tableau.reduce((acc, element) => acc + element.prix, 0) / tableau.length;
        return moyenne.toFixed(2)
@@ -20,7 +15,7 @@ const Exercice = () => {
    const changement = () => {
        setRendu(!rendu)
    }
-   const {compteur, moins , plus , reset} = useYacine()
+   const {compteur, moins , plus , reset, tableau } = useYacine()
 
    return (
        <div className="text-center p-4">
