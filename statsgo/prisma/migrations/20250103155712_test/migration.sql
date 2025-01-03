@@ -2,7 +2,6 @@
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT,
-    "pseudo" TEXT,
     "age" INTEGER,
     "password" TEXT,
     "email" TEXT,
@@ -67,9 +66,6 @@ CREATE TABLE "Authenticator" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_pseudo_key" ON "User"("pseudo");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
