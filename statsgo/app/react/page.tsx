@@ -1,21 +1,14 @@
 "use client"
-import React, { useState } from 'react'
+import React from 'react'
 import useYacine from '../store/store'
 
 const Exercice = () => {
-  
-   const [rendu, setRendu] = useState(false)
- 
+   const { compteur, moins, plus, reset, tableau, rendu, changement } = useYacine()
+
    const CalculMoyenne = () => {
        const moyenne = tableau.reduce((acc, element) => acc + element.prix, 0) / tableau.length;
        return moyenne.toFixed(2)
    }
-
-
-   const changement = () => {
-       setRendu(!rendu)
-   }
-   const {compteur, moins , plus , reset, tableau } = useYacine()
 
    return (
        <div className="text-center p-4">
