@@ -4,6 +4,16 @@ import React, { useState } from 'react'
 const Exercice = () => {
     const [compteur, setCompteur] = useState(0)
     const [rendu , setRendu] = useState(false)
+    const [tableau,setTableau] = useState([
+        {id : 1 , prix : 10 , nom : "yacine"}, 
+        {id : 2 , prix : 20 , nom : "norhane"},
+        {id : 3 , prix : 35 , nom : "yachane"}
+    ])
+
+    const CalculMoyenne = () => {
+        const moyenne = tableau.reduce((acc, element) => acc + element.prix, 0) / tableau.length;
+        return moyenne.toFixed(2) 
+      };
    
 
     const plus = () => {
@@ -37,6 +47,23 @@ const Exercice = () => {
            {
             rendu ? "Salut" : "Tchao "
            }
+
+           <div>
+            {
+                tableau.map(tab => (
+                    <div key={tab.id} className='flex gap-x-4'>
+                        <a >{tab.nom}</a>
+                        <a >{tab.prix}</a>
+                    </div>
+                    
+                ))
+                
+            }
+           </div>
+
+           <p>
+           <a >{CalculMoyenne()}</a>
+           </p>
         </div>
     )
 }
