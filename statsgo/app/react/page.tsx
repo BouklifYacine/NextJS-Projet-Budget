@@ -1,8 +1,9 @@
 "use client"
 import React, { useState } from 'react'
+import useYacine from '../store/store'
 
 const Exercice = () => {
-   const [compteur, setCompteur] = useState(0)
+  
    const [rendu, setRendu] = useState(false)
    const [tableau, setTableau] = useState([
        {id: 1, prix: 10, nom: "yacine"},
@@ -15,28 +16,11 @@ const Exercice = () => {
        return moyenne.toFixed(2)
    }
 
-const plus = () => {
-    setCompteur(compteur => compteur === 0 ? compteur + 1 : compteur * 2)
-    if(compteur > 10 ){
-        setTableau(tableau.map(table => table.id === 1 ? {...table, nom: "Yacine-V2"} : table))
-    }
-}
-
-   const moins = () => {
-       setCompteur(compteur => compteur - 1)
-   }
-
-   const reset = () => {
-       setCompteur(0)
-
-       setTableau(tableau.map(person => 
-           person.id === 1 ? {...person, nom: "reset"} : person
-       ))
-   }
 
    const changement = () => {
        setRendu(!rendu)
    }
+   const {compteur, moins , plus , reset} = useYacine()
 
    return (
        <div className="text-center p-4">
