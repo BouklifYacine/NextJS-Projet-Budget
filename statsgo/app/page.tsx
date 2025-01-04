@@ -7,13 +7,12 @@ import { prisma } from "@/prisma";
 export default async function Home() {
   const session = await auth();
 
-  const utilisateur = session?.user?.email && await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { name: true }
-   });
-
-  console.log("Session:", session);
-console.log("Utilisateur:", utilisateur);
+  const utilisateur = session?.user?.email 
+  ? await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { name: true }
+    })
+  : null;
 
   return (
     <div className="bg-red-500 w-2/3 h-20 mx-auto mt-5 rounded-full flex items-center justify-around">
