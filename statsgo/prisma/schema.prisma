@@ -23,11 +23,30 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-
+  depenses Depenses[]
+  revenus Revenu[]
   Authenticator Authenticator[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Depenses {
+  id        Int      @id @default(autoincrement())
+  prix    Float
+  description String
+  date      DateTime
+  user User @relation(fields: [userId] , references: [id])
+  userId String
+}
+
+model Revenu {
+  id        Int      @id @default(autoincrement())
+  prix    Float
+  description String
+  date      DateTime
+  user User @relation(fields: [userId] , references: [id])
+  userId String
 }
 
 model Account {
