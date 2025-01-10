@@ -34,7 +34,7 @@ model User {
 model Depenses {
   id        Int      @id @default(autoincrement())
   prix    Float
-  description String
+  description String?
   date      DateTime
   user User @relation(fields: [userId] , references: [id])
   userId String
@@ -43,7 +43,7 @@ model Depenses {
 model Revenu {
   id        Int      @id @default(autoincrement())
   prix    Float
-  description String
+  description String?
   date      DateTime
   user User @relation(fields: [userId] , references: [id])
   userId String
