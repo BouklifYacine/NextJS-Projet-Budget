@@ -90,7 +90,7 @@ export async function PATCH(request: NextRequest, { params }: Props) {
   }
 
   const body = await request.json();
-    const { prix, description, date } = body;
+    const {  id: revenuId, prix, description, date } = body;
 
     const validation = SchemaRevenus.safeParse({ prix, description, date });
 
@@ -100,5 +100,16 @@ export async function PATCH(request: NextRequest, { params }: Props) {
         { status: 400 }
       );
     }
+
+    const revenu = await prisma.revenu.findUnique({
+        where: { id: revenuId },
+      });
+  
+      if (!revenu) {
+        return NextResponse.json(
+          { error: "Revenu non trouvé" },
+          { status: 404 }
+        );
+      }
 
 }
