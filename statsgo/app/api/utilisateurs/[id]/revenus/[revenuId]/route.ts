@@ -65,10 +65,10 @@ export async function GET(request: NextRequest, { params }: Props) {
 
 export async function PATCH(request: NextRequest, { params }: Props) {
   try {
-
-
     const session = await auth();
-    if (!session?.user?.id) {
+    const sessionId = session?.user?.id;
+    
+    if (!sessionId) {
       return NextResponse.json(
         { error: "Authentification requise" },
         { status: 401 }
@@ -85,7 +85,7 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       );
     }
 
-    if (session.user.id !== id) {
+    if (sessionId !== id) {
       return NextResponse.json(
         { error: "Vous n'êtes pas autorisé à modifier ces données" },
         { status: 403 }
@@ -116,6 +116,13 @@ export async function PATCH(request: NextRequest, { params }: Props) {
 
     if (!revenuexistant) {
       return NextResponse.json({ error: "Revenu non trouvé" }, { status: 404 });
+    }
+
+    if (revenuexistant.userId !== sessionId) {
+      return NextResponse.json(
+        { error: "Accès non autorisé" },
+        { status: 403 }
+      );
     }
 
     if (revenuexistant.userId !== user.id) {
