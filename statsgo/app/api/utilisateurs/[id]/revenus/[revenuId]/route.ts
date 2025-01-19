@@ -50,22 +50,13 @@ export async function GET(request: NextRequest, { params }: Props) {
     }
 
     const revenu = await prisma.revenu.findUnique({
-      where: { id: revenuIdNumber },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
+      where: { id: revenuIdNumber, userId: id }, 
     });
 
     if (!revenu) {
       return NextResponse.json({ error: "Revenu non trouvé" }, { status: 404 });
     }
-    
+
  // A supprimer quand on fera le front
     if (revenu.userId !== id) {
       return NextResponse.json(
@@ -110,17 +101,17 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       );
     }
 
-    if (sessionId !== id) {
-      return NextResponse.json(
-        { error: "Vous n'êtes pas autorisé à modifier ces données" },
-        { status: 403 }
-      );
-    }
-
     if (revenuId !== revenuIdNumber.toString()) {
       return NextResponse.json(
         { error: "L'ID doit contenir uniquement des chiffres" },
         { status: 400 }
+      );
+    }
+
+    if (sessionId !== id) {
+      return NextResponse.json(
+        { error: "Vous n'êtes pas autorisé à modifier ces données" },
+        { status: 403 }
       );
     }
 
@@ -247,7 +238,6 @@ export async function DELETE(request : NextRequest, { params } : Props){
         { status: 403 }
       );
     }
-
 
     // A supprimer quand on fera le front
     if (revenuexistant.userId !== user.id) {
