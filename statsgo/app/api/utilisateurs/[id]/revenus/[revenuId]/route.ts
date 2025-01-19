@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
 import { SchemaRevenus } from "@/schema/SchemaRevenus";
+import { auth } from "@/auth";
 interface Props {
   params: {
     id: string;
@@ -63,47 +64,41 @@ export async function GET(request: NextRequest, { params }: Props) {
 }
 
 export async function PATCH(request: NextRequest, { params }: Props) {
-  const { id, revenuId } = await params;
-
-  const revenuIdNumber = parseInt(revenuId);
-
-  if (isNaN(revenuIdNumber)) {
-    return NextResponse.json(
-      { error: " L'id doit etre un nombre " },
-      { status: 400 }
-    );
-  }
-
-  if (revenuId !== revenuIdNumber.toString()) {
-    return NextResponse.json(
-      {
-        error: "Ce revenu ne correspond pas veuillez écrire juste des nombres ",
-      },
-      { status: 400 }
-    );
-  }
-
-  const revenu = await prisma.revenu.findUnique({
-    where: { id: revenuIdNumber },
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-        },
-      },
-    },
-  });
-
-  if (!revenu) {
-    return NextResponse.json({ error: "Revenu non trouvé" }, { status: 404 });
-  }
-
-  if (revenu.userId !== id) {
-    return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
-  }
   try {
+
+
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: "Authentification requise" },
+        { status: 401 }
+      );
+    }
+
+    const { id, revenuId } = await params;
+    const revenuIdNumber = parseInt(revenuId);
+
+    if (isNaN(revenuIdNumber)) {
+      return NextResponse.json(
+        { error: "L'ID doit être un nombre" },
+        { status: 400 }
+      );
+    }
+
+    if (session.user.id !== id) {
+      return NextResponse.json(
+        { error: "Vous n'êtes pas autorisé à modifier ces données" },
+        { status: 403 }
+      );
+    }
+
+    if (revenuId !== revenuIdNumber.toString()) {
+      return NextResponse.json(
+        { error: "L'ID doit contenir uniquement des chiffres" },
+        { status: 400 }
+      );
+    }
+
     const user = await prisma.user.findUnique({
       where: { id: id },
     });
@@ -115,8 +110,23 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       );
     }
 
+    const revenuexistant = await prisma.revenu.findUnique({
+      where: { id: revenuIdNumber },
+    });
+
+    if (!revenuexistant) {
+      return NextResponse.json({ error: "Revenu non trouvé" }, { status: 404 });
+    }
+
+    if (revenuexistant.userId !== user.id) {
+      return NextResponse.json(
+        { error: "Accès non autorisé" },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
-    const { id: revenuId, prix, description, date } = body;
+    const { prix, description, date } = body;
 
     const validation = SchemaRevenus.safeParse({ prix, description, date });
     if (!validation.success) {
@@ -126,23 +136,8 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       );
     }
 
-    const revenu = await prisma.revenu.findUnique({
-      where: { id: revenuId },
-    });
-
-    if (!revenu) {
-      return NextResponse.json({ error: "Revenu non trouvé" }, { status: 404 });
-    }
-
-    if (revenu.userId !== user.id) {
-      return NextResponse.json(
-        { error: "Vous n'êtes pas autorisé à modifier ce revenu" },
-        { status: 403 }
-      );
-    }
-
     const revenumisajour = await prisma.revenu.update({
-      where: { id: revenuId },
+      where: { id: revenuIdNumber },
       data: {
         prix,
         description,
@@ -150,7 +145,7 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       },
     });
 
-    return NextResponse.json(revenumisajour, { status: 200 });
+    return NextResponse.json(revenumisajour);
   } catch (error) {
     console.error("Erreur lors de la mise à jour du revenu:", error);
     return NextResponse.json(
