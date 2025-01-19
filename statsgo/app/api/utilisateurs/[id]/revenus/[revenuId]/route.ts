@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma";
-
 interface Props {
   params: {
     id: string;
@@ -8,22 +7,19 @@ interface Props {
   };
 }
 
-export async function GET(
-  request: NextRequest,
-  context: { params: Promise<Props['params']> }
-) {
-  // Attendre les paramètres
-  const params = await context.params;
-  const { id, revenuId } = params;
-
+export async function GET(request: NextRequest, { params }: Props) {
   try {
-    const revenuIdNumber = Number(revenuId);
-    if (isNaN(revenuIdNumber)) {
-      return NextResponse.json(
-        { error: "ID du revenu invalide" },
-        { status: 400 }
-      );
-    }
+    const { id, revenuId } = await params;
+
+ const revenuIdNumber = parseInt(revenuId)
+
+ if(isNaN(revenuIdNumber) ){
+return NextResponse.json({error : " L'id doit etre un nombre "} , {status : 400})
+ }
+
+ if( revenuId !== revenuIdNumber.toString()){
+return NextResponse.json({error : "Ce revenu ne correspond pas veuillez écrire juste des nombres "} , {status : 400})
+ }
 
     const revenu = await prisma.revenu.findUnique({
       where: { id: revenuIdNumber },
@@ -39,25 +35,19 @@ export async function GET(
     });
 
     if (!revenu) {
-      return NextResponse.json(
-        { error: "Revenu non trouvé" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Revenu non trouvé" }, { status: 404 });
     }
 
     if (revenu.userId !== id) {
       return NextResponse.json(
-        { error: "Vous n'êtes pas autorisé à accéder à ce revenu" },
+        { error: "Accès non autorisé" },
         { status: 403 }
       );
     }
 
-    return NextResponse.json(revenu, { status: 200 });
+    return NextResponse.json(revenu);
   } catch (error) {
-    console.error("Erreur lors de la récupération du revenu:", error);
-    return NextResponse.json(
-      { error: "Erreur lors de la récupération du revenu" },
-      { status: 500 }
-    );
+    console.error("Erreur:", error);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
