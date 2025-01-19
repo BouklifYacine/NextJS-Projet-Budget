@@ -26,7 +26,6 @@ model User {
   depenses Depenses[]
   revenus Revenu[]
   Authenticator Authenticator[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
