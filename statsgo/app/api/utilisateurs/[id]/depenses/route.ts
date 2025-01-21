@@ -19,7 +19,7 @@ export async function POST(request: Request, { params }: Props) {
     // }
 
     const user = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id: await params.id },
     });
 
     if (!user) {

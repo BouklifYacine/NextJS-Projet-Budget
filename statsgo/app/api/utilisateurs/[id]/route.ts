@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, { params }: Props) {
       }
   
       const user = await prisma.user.findUnique({
-        where: { id: params.id },
+        where: { id: await params.id },
         // faut rajouter includes pour ajouter les relations one to many
         include: {
           depenses: true,
