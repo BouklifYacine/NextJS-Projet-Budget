@@ -58,12 +58,17 @@ export async function GET(request: NextRequest, { params }: Props) {
     }
 
  // A supprimer quand on fera le front
-    if (revenu.userId !== id) {
-      return NextResponse.json(
-        { error: "Accès non autorisé" },
-        { status: 403 }
-      );
-    }
+    // if (revenu.userId !== id) {
+    //   return NextResponse.json(
+    //     { error: "Accès non autorisé" },
+    //     { status: 403 }
+    //   );
+    // }
+
+    const test = revenu.userId
+
+    console.log(id)
+    console.log(test)
 
     // if (revenu.userId !== sessionId) {
     //   return NextResponse.json(

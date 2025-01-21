@@ -11,10 +11,11 @@ interface Props {
 
 export async function GET(request: Request, { params }: Props) {
     
-  const { userId, depenseId } = params;
+  const { userId, depenseId } = await params;
 
   const DepenseIdNombre = parseInt(depenseId);
-  console.log(DepenseIdNombre)
+  const iduser = parseInt(userId)
+
 
   if (isNaN(DepenseIdNombre)) {
     return NextResponse.json(
@@ -50,8 +51,10 @@ export async function GET(request: Request, { params }: Props) {
     const depenseuserid = depense.userId
     console.log(depenseuserid)
     console.log(" Voici le userid :  " + userId)
+    console.log(DepenseIdNombre)
+    console.log(userId)
 
-    if(depense.userId !== userId){
+    if(depenseuserid !== userId){
         return NextResponse.json(
           { error: "Accès non autorisé" },
           { status: 403 }
