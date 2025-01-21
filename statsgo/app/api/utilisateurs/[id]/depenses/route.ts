@@ -1,13 +1,13 @@
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { SchemaRevenus } from "@/schema/SchemaRevenus";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 interface Props {
   params: { id: string };
 }
 
-export async function POST(request: Request, { params }: Props) {
+export async function POST(request: NextRequest, { params }: Props) {
   try {
     // const session = await auth();
 
@@ -40,9 +40,9 @@ export async function POST(request: Request, { params }: Props) {
     // }
 
     const body = await request.json();
-    const { prix, description, date } = body;
+    const { prix, description } = body;
 
-    const validation = SchemaRevenus.safeParse({ prix, description, date });
+    const validation = SchemaRevenus.safeParse({ prix, description});
 
     if (!validation.success) {
       return NextResponse.json(
