@@ -18,8 +18,11 @@ export async function POST(request: Request, { params }: Props) {
     //   );
     // }
 
+
+    const { id } = await params
+
     const user = await prisma.user.findUnique({
-      where: { id: await params.id },
+      where: { id: id },
     });
 
     if (!user) {

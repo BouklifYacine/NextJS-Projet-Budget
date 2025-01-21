@@ -9,17 +9,19 @@ interface Props {
 
 export async function GET(request: NextRequest, { params }: Props) {
     try {
-      const session = await auth();
+      // const session = await auth();
   
-      if (!session) {
-        return NextResponse.json(
-          { error: "Authentification requise" },
-          { status: 401 }
-        );
-      }
+      // if (!session) {
+      //   return NextResponse.json(
+      //     { error: "Authentification requise" },
+      //     { status: 401 }
+      //   );
+      // }
+
+      const { id } = await params
   
       const user = await prisma.user.findUnique({
-        where: { id: await params.id },
+        where:  { id: id },
         // faut rajouter includes pour ajouter les relations one to many
         include: {
           depenses: true,
@@ -34,12 +36,12 @@ export async function GET(request: NextRequest, { params }: Props) {
         );
       }
   
-      if (session.user?.id !== user.id) {
-        return NextResponse.json(
-          { error: "Accès non autorisé" },
-          { status: 403 }
-        );
-      }
+      // if (session.user?.id !== user.id) {
+      //   return NextResponse.json(
+      //     { error: "Accès non autorisé" },
+      //     { status: 403 }
+      //   );
+      // }
   
    
       return NextResponse.json(user);
@@ -71,9 +73,9 @@ export async function POST(request : NextResponse , {params} : Props){
 
 export async function DELETE(request : NextResponse , {params} : Props){
 
-    const session = await auth()
+    // const session = await auth()
 
-    if(!session) return NextResponse.json("Vous devez etre connecté pour poster. ")
+    // if(!session) return NextResponse.json("Vous devez etre connecté pour poster. ")
 
      const { id } = await params; 
 

@@ -9,17 +9,19 @@ interface Props {
 
 export async function POST(request: Request, { params }: Props) {
   try {
-    const session = await auth();
+    // const session = await auth();
 
-    if (!session) {
-        return NextResponse.json(
-            { error: "Vous devez être connecté pour accéder à vos données" },
-            { status: 401 }
-        );
-    }
+    // if (!session) {
+    //     return NextResponse.json(
+    //         { error: "Vous devez être connecté pour accéder à vos données" },
+    //         { status: 401 }
+    //     );
+    // }
+
+    const { id } = await params
 
     const user = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     if (!user) {
@@ -29,12 +31,12 @@ export async function POST(request: Request, { params }: Props) {
       );
     }
 
-    if (session?.user?.email !== user.email) {
-        return NextResponse.json(
-            { error: "Vous n'êtes pas autorisé à poster" },
-            { status: 403 }
-        );
-    }
+    // if (session?.user?.email !== user.email) {
+    //     return NextResponse.json(
+    //         { error: "Vous n'êtes pas autorisé à poster" },
+    //         { status: 403 }
+    //     );
+    // }
 
  
 
