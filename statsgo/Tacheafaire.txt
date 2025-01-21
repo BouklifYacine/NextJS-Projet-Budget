@@ -1,0 +1,16 @@
+Routes : 
+
+Revenus : 
+
+La route pour post des revenus par id d'utilisateur marche 
+la route pour modifier des revenus par id d'utilisateur et id de revenu marche
+La route pour suprimer des revenus par id d'utilisateur et id de revenu marche 
+
+Dépenses : 
+
+La route pour post des dépenses par id d'utilisateur marche 
+
+A faire : 
+
+une route route pour modifier des revenus par id d'utilisateur et id de revenu marche
+une route pour suprimer des revenus par id d'utilisateur et id de revenu marche 

@@ -11,15 +11,15 @@ interface Props {
 
 export async function GET(request: NextRequest, { params }: Props) {
   try {
-    const session = await auth();
-    const sessionId = session?.user?.id;
+    // const session = await auth();
+    // const sessionId = session?.user?.id;
     
-    if (!session) {
-      return NextResponse.json(
-        { error: "Authentification requise" },
-        { status: 401 }
-      );
-    }
+    // if (!session) {
+    //   return NextResponse.json(
+    //     { error: "Authentification requise" },
+    //     { status: 401 }
+    //   );
+    // }
 
     const { id, revenuId } = await params;
 
@@ -32,12 +32,12 @@ export async function GET(request: NextRequest, { params }: Props) {
       );
     }
 
-    if (sessionId !== id) {
-      return NextResponse.json(
-        { error: "Vous n'êtes pas autorisé à modifier ces données" },
-        { status: 403 }
-      );
-    }
+    // if (sessionId !== id) {
+    //   return NextResponse.json(
+    //     { error: "Vous n'êtes pas autorisé à modifier ces données" },
+    //     { status: 403 }
+    //   );
+    // }
 
     if (revenuId !== revenuIdNumber.toString()) {
       return NextResponse.json(
@@ -65,12 +65,12 @@ export async function GET(request: NextRequest, { params }: Props) {
       );
     }
 
-    if (revenu.userId !== sessionId) {
-      return NextResponse.json(
-        { error: "Accès non autorisé" },
-        { status: 403 }
-      );
-    }
+    // if (revenu.userId !== sessionId) {
+    //   return NextResponse.json(
+    //     { error: "Accès non autorisé" },
+    //     { status: 403 }
+    //   );
+    // }
 
     return NextResponse.json(revenu);
   } catch (error) {
@@ -81,15 +81,15 @@ export async function GET(request: NextRequest, { params }: Props) {
 
 export async function PATCH(request: NextRequest, { params }: Props) {
   try {
-    const session = await auth();
-    const sessionId = session?.user?.id;
+    // const session = await auth();
+    // const sessionId = session?.user?.id;
     
-    if (!session) {
-      return NextResponse.json(
-        { error: "Authentification requise" },
-        { status: 401 }
-      );
-    }
+    // if (!session) {
+    //   return NextResponse.json(
+    //     { error: "Authentification requise" },
+    //     { status: 401 }
+    //   );
+    // }
 
     const { id, revenuId } = await params;
     const revenuIdNumber = parseInt(revenuId);
@@ -108,12 +108,12 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       );
     }
 
-    if (sessionId !== id) {
-      return NextResponse.json(
-        { error: "Vous n'êtes pas autorisé à modifier ces données" },
-        { status: 403 }
-      );
-    }
+    // if (sessionId !== id) {
+    //   return NextResponse.json(
+    //     { error: "Vous n'êtes pas autorisé à modifier ces données" },
+    //     { status: 403 }
+    //   );
+    // }
 
     const user = await prisma.user.findUnique({
       where: { id: id },
@@ -134,12 +134,13 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       return NextResponse.json({ error: "Revenu non trouvé" }, { status: 404 });
     }
 
-    if (revenuexistant.userId !== sessionId) {
-      return NextResponse.json(
-        { error: "Accès non autorisé" },
-        { status: 403 }
-      );
-    }
+    // if (revenuexistant.userId !== sessionId) {
+    //   return NextResponse.json(
+    //     { error: "Accès non autorisé" },
+    //     { status: 403 }
+    //   );
+    // }
+
     // A supprimer quand on fera le front
     if (revenuexistant.userId !== user.id) {
       return NextResponse.json(
@@ -179,15 +180,15 @@ export async function PATCH(request: NextRequest, { params }: Props) {
 }
 
 export async function DELETE(request : NextRequest, { params } : Props){
-  const session = await auth();
-    const sessionId = session?.user?.id;
+  // const session = await auth();
+  //   const sessionId = session?.user?.id;
     
-    if (!session) {
-      return NextResponse.json(
-        { error: "Authentification requise" },
-        { status: 401 }
-      );
-    }
+  //   if (!session) {
+  //     return NextResponse.json(
+  //       { error: "Authentification requise" },
+  //       { status: 401 }
+  //     );
+  //   }
 
     const { id, revenuId } = await params;
     const revenuIdNumber = parseInt(revenuId);
@@ -199,12 +200,12 @@ export async function DELETE(request : NextRequest, { params } : Props){
       );
     }
 
-    if (sessionId !== id) {
-      return NextResponse.json(
-        { error: "Vous n'êtes pas autorisé à modifier ces données" },
-        { status: 403 }
-      );
-    }
+    // if (sessionId !== id) {
+    //   return NextResponse.json(
+    //     { error: "Vous n'êtes pas autorisé à modifier ces données" },
+    //     { status: 403 }
+    //   );
+    // }
 
     if (revenuId !== revenuIdNumber.toString()) {
       return NextResponse.json(
@@ -232,12 +233,12 @@ export async function DELETE(request : NextRequest, { params } : Props){
       return NextResponse.json({ error: "Revenu non trouvé" }, { status: 404 });
     }
 
-    if (revenuexistant.userId !== sessionId) {
-      return NextResponse.json(
-        { error: "Accès non autorisé" },
-        { status: 403 }
-      );
-    }
+    // if (revenuexistant.userId !== sessionId) {
+    //   return NextResponse.json(
+    //     { error: "Accès non autorisé" },
+    //     { status: 403 }
+    //   );
+    // }
 
     // A supprimer quand on fera le front
     if (revenuexistant.userId !== user.id) {
