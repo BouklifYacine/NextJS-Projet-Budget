@@ -96,9 +96,51 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     data: {
       prix,
       description,
-      // date: new Date()
+      date: new Date()
     },
   });
 
   return NextResponse.json(depensesmisajour);
+}
+
+export async function DELETE(request : NextRequest, { params } : Props){
+
+  const { id, depenseId } = await params;
+
+  const depenseIdNumber = parseInt(depenseId);
+
+  // Vérifie si la conversion en string donne le même résultat
+  if (depenseIdNumber.toString() !== depenseId) {
+    return NextResponse.json(
+      {
+        error: "ID de dépense invalide - doit contenir uniquement des chiffres",
+      },
+      { status: 400 }
+    );
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: id },
+  });
+
+  if (!user) {
+    return NextResponse.json(
+      { error: "Utilisateur non trouvé" },
+      { status: 404 }
+    );
+  }
+
+  const depenseExistante = await prisma.depenses.findUnique({
+    where: { id: depenseIdNumber },
+  });
+
+  if (!depenseExistante) {
+    return NextResponse.json(" Cette dépense n'existe pas ");s
+  }
+
+  const depensesupprimer = await prisma.depenses.delete({
+    where : { id : depenseIdNumber}
+  })
+
+  return NextResponse.json("La dépense a l'id : " + depensesupprimer.id + " a bien été supprimer")
 }
