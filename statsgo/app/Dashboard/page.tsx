@@ -29,7 +29,7 @@ const StatsGo = async ({ iduser }: Props) => {
     redirect("/");
   }
 
-  return <div>Page utilisateur : {sessionname} + {utilisateurEmail} + {sessionId} </div>;
+  return <div>Page DashBoard : {sessionname} + {utilisateurEmail} + {sessionId} </div>;
 };
 
 export default StatsGo;
