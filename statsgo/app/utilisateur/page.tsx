@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
@@ -10,20 +10,26 @@ interface Props {
 
 const StatsGo = async ({ iduser }: Props) => {
   const session = await auth();
+
   const sessionname = session?.user?.name;
-  console.log(session);
+  const sessionId = session?.user?.id;
+  console.log(session?.user?.id);
 
   const user = await prisma.user.findUnique({
-    where: { id: iduser ?? ""  },
+    where: { email: session?.user?.email || "" },
   });
 
-  console.log(user?.id)
+  const utilisateurid = user?.id;
+  const utilisateurEmail = user?.email
+  console.log(utilisateurEmail)
 
-  if (!session) {
+  console.log(utilisateurid);
+
+  if (!session ) {
     redirect("/");
   }
 
-  return <div>Page utilisateur : {sessionname} </div>;
+  return <div>Page utilisateur : {sessionname} + {utilisateurEmail} + {sessionId} </div>;
 };
 
 export default StatsGo;
