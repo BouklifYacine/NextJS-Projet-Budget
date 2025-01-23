@@ -29,7 +29,7 @@ const AuthForm = () => {
   const onSubmit = async (data : Schema) => {
     try {
       const response = await axios.post('/api/inscription', data);
-      router.push("/")
+      router.push("/connexion")
       reset()
       console.log(response.data)
     } catch (error) {

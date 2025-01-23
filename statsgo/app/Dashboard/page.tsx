@@ -12,7 +12,7 @@ const DashboardPage = async ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <h1>Tableau de bord de {session?.user?.email}</h1>
-      <p>ID Utilisateur : {params.id}</p>
+      <p>ID Utilisateur : {session.user?.id}</p>
     </div>
   )
 }

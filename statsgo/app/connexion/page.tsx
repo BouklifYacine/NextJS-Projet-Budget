@@ -30,15 +30,16 @@ const ConnexionForm = () => {
      const result = await signIn('credentials', {
        email: data.email,
        password: data.password,
-       redirect: false, 
+       redirect: true,
+       callbackUrl: '/dashboard' 
      });
 
      if (result?.error) {
        alert('Email ou mot de passe incorrect');
        return;
      }
-
-     router.push('/');
+console.log(result)
+     router.push('/dashboard');
      
    } catch {
      alert('Une erreur est survenue');
