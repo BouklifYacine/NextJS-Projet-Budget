@@ -1,35 +1,20 @@
-"use server";
 
-import { auth } from "@/auth";
-import { prisma } from "@/prisma";
-import { redirect } from "next/navigation";
+import { auth } from "@/auth"
+import { redirect } from "next/navigation"
 
-interface Props {
-  iduser: string;
-}
-
-const StatsGo = async ({ iduser }: Props) => {
-  const session = await auth();
-
-  const sessionname = session?.user?.name;
-  const sessionId = session?.user?.id;
-  console.log(session?.user?.id);
-
-  const user = await prisma.user.findUnique({
-    where: { email: session?.user?.email || "" },
-  });
-
-  const utilisateurid = user?.id;
-  const utilisateurEmail = user?.email
-  console.log(utilisateurEmail)
-
-  console.log(utilisateurid);
-
-  if (!session ) {
-    redirect("/");
+const DashboardPage = async ({ params }: { params: { id: string } }) => {
+  const session = await auth()
+  
+  if (!session) {
+    return redirect('/connexion')
   }
 
-  return <div>Page DashBoard : {sessionname} + {utilisateurEmail} + {sessionId} </div>;
-};
+  return (
+    <div>
+      <h1>Tableau de bord de {session?.user?.email}</h1>
+      <p>ID Utilisateur : {params.id}</p>
+    </div>
+  )
+}
 
-export default StatsGo;
+export default DashboardPage
