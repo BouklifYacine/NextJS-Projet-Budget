@@ -1,22 +1,22 @@
-Routes : 
-
-Revenus : 
-
-La route pour post des revenus par id d'utilisateur marche 
-la route pour modifier des revenus par id d'utilisateur et id de revenu marche
-La route pour suprimer des revenus par id d'utilisateur et id de revenu marche 
-
-Dépenses : 
-
-La route pour post des dépenses par id d'utilisateur marche 
-
-Fait : 
-
-La route pour get des dépenses par id d'utilisateurs et id de dépense 
-une route pour modifier des dépenses par id d'utilisateur et id de dépenses
+23/01/2025 : 
 
 A faire : 
 
-une route pour suprimer des dépenses par id d'utilisateur et id de dépenses 
+Landing Page 
+
+Dashboard:
+
+- Vue d'ensemble des finances
+- Résumé des revenus/dépenses (cards)
+- Graphique principal (Recharts)
+- Navigation vers les autres pages
+
+Gestion des transactions :
+
+- Liste des transactions (tableau avec tri/filtre) avec deux tableau un revenu et dépense et cliquer pour switch entre les deux 
+- Boutons d'ajout/modification/suppression
+- Formulaire de création/édition
+- Catégorisation (revenus vs dépenses)
+
 
 
