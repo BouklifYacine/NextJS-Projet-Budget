@@ -28,6 +28,9 @@ export async function GET(request: NextRequest, { params }: Props) {
           revenus: true, 
         },
       });
+      
+      const revenus = user?.revenus
+      const depenses = user?.depenses
   
       if (!user) {
         return NextResponse.json(
@@ -44,7 +47,7 @@ export async function GET(request: NextRequest, { params }: Props) {
       // }
   
    
-      return NextResponse.json(user);
+      return NextResponse.json({revenus,depenses});
     } catch (error) {
       console.error("Erreur lors de la récupération des données:", error);
       return NextResponse.json(
