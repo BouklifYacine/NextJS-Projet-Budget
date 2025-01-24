@@ -48,7 +48,7 @@ export default function Header({ session, utilisateur }: HeaderProps) {
                     <AvatarFallback>{session.user.name?.charAt(0) || "U"}</AvatarFallback>
                   </Avatar>
                 ) : (
-                  <p className="text-sm font-medium text-gray-700">{utilisateur?.name || session.user?.email}</p>
+                  <p className="text-xl font-semibold  text-gray-700">{utilisateur?.name || session.user?.email}</p>
                 )}
                 <Link href={`/utilisateur/${session?.user?.id}/dashboard`}>
                   <Button variant="outline">Dashboard</Button>

@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { MoveDown, MoveUp } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Header from "@/components/header";
+import { redirect } from "next/navigation";
 
 interface Params {
  id: string;
@@ -32,6 +34,7 @@ interface ResponseData {
 export default function DashboardPage({ params }: { params: Promise<Params> }) {
  const routeParams = use(params) as Params;
  const {data : session} = useSession()
+
  
  const { data, isLoading } = useQuery<ResponseData>({
    queryKey: ['utilisateur', routeParams.id],
@@ -43,6 +46,7 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
 
  if (isLoading) return <div>Chargement...</div>;
  if (!data) return null;
+ if(!session) redirect("/")
 
  const { depenses, revenus } = data;
  const totalDepenses = depenses.reduce((sum, dep) => sum + dep.prix, 0);
@@ -51,9 +55,11 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
  const nombredepenses = depenses.length
  const nombrerevenu = revenus.length
 
+ const utilisateur = { name: session?.user?.name || session?.user?.email || 'Utilisateur' };
+
  return (
    <div className="p-6">
-
+ <Header session={session} utilisateur={utilisateur} />
     <h1 className="text-center mb-10 text-3xl font-bold">Dashboard de : {session?.user?.name} </h1>
      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
        <div className="bg-gray-300 p-4 rounded-lg">
