@@ -3,9 +3,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Boutondeconnexion from "@/components/boutondeconnexion";
 import Boutonconnexion from "@/components/boutonconnexion";
 import { prisma } from "@/prisma";
+import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
+  console.log(session)
 
   const utilisateur = session?.user?.email 
   ? await prisma.user.findUnique({
@@ -31,31 +33,31 @@ export default async function Home() {
       </div>
 
       {session ? (
-        session.user?.image ? (
-          <div className="flex gap-x-5">
-            
-            <Avatar>
-              <AvatarImage src={session.user.image} alt="Avatar" />
-              <AvatarFallback>
-                {session.user.name?.charAt(0) || "U"}
-              </AvatarFallback>
-            </Avatar>
-
-            <Boutondeconnexion></Boutondeconnexion>
-          </div>
-        ) : (
-          <div className="flex gap-x-5 items-center">
-<p className="font-bold text-white">{utilisateur?.name || session.user?.email}</p>
- <Boutondeconnexion></Boutondeconnexion>
-
-          </div>
-         
-
-          
-        )
-      ) : (
-      <Boutonconnexion></Boutonconnexion>
-      )}
+  session.user?.image ? (
+    <div className="flex gap-x-5">
+      <Avatar>
+        <AvatarImage src={session.user.image} alt="Avatar" />
+        <AvatarFallback>
+          {session.user.name?.charAt(0) || "U"}
+        </AvatarFallback>
+      </Avatar>
+      <Link href={`/utilisateur/${session.user.id}/dashboard`} className="bg-blue-500 text-white px-4 py-2 rounded">
+        Dashboard
+      </Link>
+      <Boutondeconnexion />
+    </div>
+  ) : (
+    <div className="flex gap-x-5 items-center">
+      <p className="font-bold text-white">{utilisateur?.name || session.user?.email}</p>
+      <Link href={`/utilisateur/${session?.user?.id}/dashboard`} className="bg-blue-500 text-white px-4 py-2 rounded">
+        Dashboard
+      </Link>
+      <Boutondeconnexion />
+    </div>
+  )
+) : (
+  <Boutonconnexion />
+)}
     </div>
   );
 }

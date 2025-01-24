@@ -1,15 +1,16 @@
 "use client"
 
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import React from 'react'
 
 const Boutongoogle = () => {
+  const { data : session} = useSession()
   return (
     <>
     <button 
                 type="button"
                 className="w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 transition-colors mb-2 flex items-center justify-center gap-2"
-                onClick={async () => await signIn("google", { redirectTo: '/dashboard' })}
+                onClick={async () => await signIn("google", { redirectTo: `/` })}
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path

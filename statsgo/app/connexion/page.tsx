@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signIn } from "next-auth/react";
+import { getSession, signIn, } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { SchemaConnexion } from "@/schema/SchemaConnexion";
 import Boutongoogle from "@/components/boutongoogle";
@@ -22,24 +22,25 @@ const ConnexionForm = () => {
   } = useForm<Schema>({
     resolver: zodResolver(SchemaConnexion),
   });
-
+;
   const router = useRouter();
 
   const onSubmit = async (data: Schema) => {
+    
     try {
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
         redirect: false,
-        callbackUrl: "/dashboard",
+        callbackUrl: "/",
       });
 
       if (result?.error) {
         alert("Email ou mot de passe incorrect");
         return;
       }
-      console.log(result);
-      await router.push("/dashboard");
+ 
+      await router.push(`/`)
     } catch {
       alert("Une erreur est survenue");
     }
