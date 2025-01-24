@@ -3,6 +3,8 @@
 import { use } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { MoveDown, MoveUp } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 interface Params {
  id: string;
@@ -29,6 +31,7 @@ interface ResponseData {
 
 export default function DashboardPage({ params }: { params: Promise<Params> }) {
  const routeParams = use(params) as Params;
+ const {data : session} = useSession()
  
  const { data, isLoading } = useQuery<ResponseData>({
    queryKey: ['utilisateur', routeParams.id],
@@ -45,21 +48,25 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
  const totalDepenses = depenses.reduce((sum, dep) => sum + dep.prix, 0);
  const totalRevenus = revenus.reduce((sum, rev) => sum + rev.prix, 0);
  const balance = totalRevenus - totalDepenses;
+ const nombredepenses = depenses.length
+ const nombrerevenu = revenus.length
 
  return (
    <div className="p-6">
+
+    <h1 className="text-center mb-10 text-3xl font-bold">Dashboard de : {session?.user?.name} </h1>
      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-       <div className="bg-green-100 p-4 rounded-lg">
-         <h2 className="font-bold mb-2">Total Revenus</h2>
-         <p className="text-2xl">{totalRevenus.toFixed(2)}€</p>
+       <div className="bg-gray-300 p-4 rounded-lg">
+         <h2 className="font-bold mb-2">Total Revenus ({nombrerevenu})</h2>
+         <p className="text-2xl font-bold text-green-500">{totalRevenus.toFixed(2)}€</p>
        </div>
-       <div className="bg-red-100 p-4 rounded-lg">
-         <h2 className="font-bold mb-2">Total Dépenses</h2>
-         <p className="text-2xl">{totalDepenses.toFixed(2)}€</p>
+       <div className="bg-gray-300 p-4 rounded-lg">
+         <h2 className="font-bold mb-2">Total Dépenses ({nombredepenses})</h2>
+         <p className="text-2xl font-bold text-red-600">{totalDepenses.toFixed(2)}€</p>
        </div>
        <div className={`p-4 rounded-lg ${balance >= 0 ? 'bg-blue-100' : 'bg-orange-100'}`}>
          <h2 className="font-bold mb-2">Balance</h2>
-         <p className="text-2xl">{balance.toFixed(2)}€</p>
+         <p className={`text-2xl font-bold flex items-center ${balance >= 0 ? "text-green-500": "text-red-500"}`}>{balance.toFixed(2)} € {balance >= 0 ? <MoveUp /> : <MoveDown />}</p>
        </div>
      </div>
 
@@ -70,9 +77,9 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
            {depenses.slice(0, 5).map((depense) => (
              <div key={depense.id} className="bg-white p-4 rounded-lg shadow">
                <p className="font-bold text-red-600">-{depense.prix}€</p>
-               <p>{depense.description}</p>
+               <p>Description de la dépense : {depense.description}</p>
                <p className="text-sm text-gray-500">
-                 {new Date(depense.date).toLocaleDateString()}
+                 Date : {new Date(depense.date).toLocaleDateString()}
                </p>
              </div>
            ))}
@@ -85,9 +92,9 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
            {revenus.slice(0, 5).map((revenu) => (
              <div key={revenu.id} className="bg-white p-4 rounded-lg shadow">
                <p className="font-bold text-green-600">+{revenu.prix}€</p>
-               <p>{revenu.description}</p>
+               <p>Description du revenu  : {revenu.description}</p>
                <p className="text-sm text-gray-500">
-                 {new Date(revenu.date).toLocaleDateString()}
+                 Date : {new Date(revenu.date).toLocaleDateString()}
                </p>
              </div>
            ))}

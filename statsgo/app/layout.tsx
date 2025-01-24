@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { auth } from "@/auth";
-import { Providers } from "./providers"; // Nouveau composant Client
+import { Providers } from "./providers"; 
 
 export const metadata: Metadata = {
   title: "Gestion Budgétaire",
