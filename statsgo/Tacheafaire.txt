@@ -2,6 +2,8 @@
 
 A faire : 
 
+Rediriger pour chaque page avec les id 
+
 Landing Page 
 
 Dashboard:
