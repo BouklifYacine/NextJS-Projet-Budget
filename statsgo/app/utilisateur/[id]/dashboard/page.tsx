@@ -1,13 +1,11 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
-import { auth } from "@/auth";
-import Link from "next/link";
+import { use } from "react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-
 interface Params {
-  id: string;
+ id: string;
 }
 
 interface Depense {
@@ -24,32 +22,26 @@ interface Revenu {
  date: string;
 }
 
+interface ResponseData {
+ depenses: Depense[];
+ revenus: Revenu[];
+}
+
 export default function DashboardPage({ params }: { params: Promise<Params> }) {
- const routeParams = use(params);
- const [depenses, setDepenses] = useState<Depense[]>([]);
- const [revenus, setRevenus] = useState<Revenu[]>([]);
- const [loading, setLoading] = useState(true);
+ const routeParams = use(params) as Params;
+ 
+ const { data, isLoading } = useQuery<ResponseData>({
+   queryKey: ['utilisateur', routeParams.id],
+   queryFn: async () => {
+     const response = await axios.get<ResponseData>(`/api/utilisateurs/${routeParams.id}/`);
+     return response.data;
+   }
+ });
 
- useEffect(() => {
-   const fetchData = async () => {
-     try {
-       const response = await axios.get(`/api/utilisateurs/${routeParams.id}/`);
-       setDepenses(response.data.depenses);
-       setRevenus(response.data.revenus);
-     } catch (error) {
-       console.error("Erreur lors de la récupération des données:", error);
-     } finally {
-       setLoading(false);
-     }
-   };
+ if (isLoading) return <div>Chargement...</div>;
+ if (!data) return null;
 
-   fetchData();
- }, [routeParams.id]);
-
- if (loading) {
-   return <div>Chargement...</div>;
- }
-
+ const { depenses, revenus } = data;
  const totalDepenses = depenses.reduce((sum, dep) => sum + dep.prix, 0);
  const totalRevenus = revenus.reduce((sum, rev) => sum + rev.prix, 0);
  const balance = totalRevenus - totalDepenses;
