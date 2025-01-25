@@ -135,7 +135,7 @@ export async function DELETE(request : NextRequest, { params } : Props){
   });
 
   if (!depenseExistante) {
-    return NextResponse.json(" Cette dépense n'existe pas ");s
+    return NextResponse.json(" Cette dépense n'existe pas ");
   }
 
   const depensesupprimer = await prisma.depenses.delete({

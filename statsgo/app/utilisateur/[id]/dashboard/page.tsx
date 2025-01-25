@@ -1,15 +1,14 @@
 "use client";
 
 import { use } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { MoveDown, MoveUp } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Header from "@/components/header";
 import { redirect } from "next/navigation";
 import BoutonEdit from "@/components/BoutonEdit";
-import BoutonSupprimer from "@/components/BoutonSupprimer";
-import Alerte, { DeleteDialog } from "@/components/alert";
+import Alerte from "@/components/alert";
 
 interface Params {
  id: string;
@@ -37,15 +36,36 @@ interface ResponseData {
 export default function DashboardPage({ params }: { params: Promise<Params> }) {
  const routeParams = use(params) as Params;
  const {data : session} = useSession()
+ const queryClient = useQueryClient();
 
  
  const { data, isLoading } = useQuery<ResponseData>({
    queryKey: ['utilisateur', routeParams.id],
    queryFn: async () => {
      const response = await axios.get<ResponseData>(`/api/utilisateurs/${routeParams.id}/`);
+     console.log(response.data.revenus.length)
      return response.data;
    }
  });
+
+ const SupprimerDepenses = useMutation({
+  mutationFn: (id: number) => 
+    axios.delete(`/api/utilisateurs/${routeParams.id}/depenses/${id}`), 
+  onSuccess: () => {
+    queryClient.invalidateQueries({ 
+      queryKey: ['utilisateur', routeParams.id] 
+    });
+  }
+});
+
+const SupprimerRevenus = useMutation({
+  mutationFn : (id : number) => axios.delete(`/api/utilisateurs/${routeParams.id}/revenus/${id}`),
+  onSuccess : () => {
+    queryClient.invalidateQueries({
+      queryKey : ["utilisateur" , routeParams.id]
+    })
+  }
+})
 
  if (isLoading) return <div>Chargement...</div>;
  if (!data) return null;
@@ -87,7 +107,7 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
              <div key={depense.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
                <div className="font-bold text-red-600 flex justify-between">
                 <p>-{depense.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="depense" Supprimer={() => console.log("Test dépenses")} ></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="depense" Supprimer={() => SupprimerDepenses.mutate(depense.id)} ></Alerte></p>
                </div>
                <p>Description de la dépense : {depense.description}</p>
                <p className="text-sm text-gray-500">
@@ -105,7 +125,7 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
              <div key={revenu.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
               <div className="font-bold text-green-500 flex justify-between">
                 <p>-{revenu.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="revenu" Supprimer={() => console.log("Test Revenus")}></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="revenu" Supprimer={() => SupprimerRevenus.mutate(revenu.id)}></Alerte></p>
                </div>
                <p>Description du revenu  : {revenu.description}</p>
                <p className="text-sm text-gray-500">
