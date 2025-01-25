@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export default function Header({ session, utilisateur }: HeaderProps) {
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-white rounded-lg mb-5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -21,21 +21,7 @@ export default function Header({ session, utilisateur }: HeaderProps) {
             </Link>
             <nav className="hidden md:block ml-10">
               <div className="flex space-x-4">
-                <Link href="/" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                  Accueil
-                </Link>
-                <Link
-                  href="/favoris"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Favoris
-                </Link>
-                <Link
-                  href="/faq"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  FAQ
-                </Link>
+    
               </div>
             </nav>
           </div>
