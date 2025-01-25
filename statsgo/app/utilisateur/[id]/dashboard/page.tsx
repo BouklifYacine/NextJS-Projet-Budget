@@ -7,6 +7,8 @@ import { MoveDown, MoveUp } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Header from "@/components/header";
 import { redirect } from "next/navigation";
+import BoutonEdit from "@/components/BoutonEdit";
+import BoutonSupprimer from "@/components/BoutonSupprimer";
 
 interface Params {
  id: string;
@@ -40,6 +42,7 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
    queryKey: ['utilisateur', routeParams.id],
    queryFn: async () => {
      const response = await axios.get<ResponseData>(`/api/utilisateurs/${routeParams.id}/`);
+     console.log( response.data)
      return response.data;
    }
  });
@@ -60,7 +63,7 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
  return (
    <div className="p-6">
  <Header session={session} utilisateur={utilisateur} />
-    <h1 className="text-center mb-10 text-3xl font-bold">Dashboard de : {session?.user?.name} </h1>
+    <h1 className="text-center mb-10 text-3xl font-bold">Dashboard de : {utilisateur.name} </h1>
      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
        <div className="bg-gray-300 p-4 rounded-lg">
          <h2 className="font-bold mb-2">Total Revenus ({nombrerevenu})</h2>
@@ -80,9 +83,12 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
        <div>
          <h2 className="text-xl font-bold mb-4">Dernières Dépenses</h2>
          <div className="space-y-2">
-           {depenses.slice(0, 5).map((depense) => (
-             <div key={depense.id} className="bg-white p-4 rounded-lg shadow">
-               <p className="font-bold text-red-600">-{depense.prix}€</p>
+           {depenses.map((depense) => (
+             <div key={depense.id} className="bg-white p-4 rounded-2xl border-2 border-gray-400 shadow">
+               <div className="font-bold text-red-600 flex justify-between">
+                <p>-{depense.prix}€</p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <BoutonSupprimer /></p>
+               </div>
                <p>Description de la dépense : {depense.description}</p>
                <p className="text-sm text-gray-500">
                  Date : {new Date(depense.date).toLocaleDateString()}
@@ -97,7 +103,10 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
          <div className="space-y-2">
            {revenus.slice(0, 5).map((revenu) => (
              <div key={revenu.id} className="bg-white p-4 rounded-lg shadow">
-               <p className="font-bold text-green-600">+{revenu.prix}€</p>
+              <div className="font-bold text-green-500 flex justify-between">
+                <p>-{revenu.prix}€</p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <BoutonSupprimer /></p>
+               </div>
                <p>Description du revenu  : {revenu.description}</p>
                <p className="text-sm text-gray-500">
                  Date : {new Date(revenu.date).toLocaleDateString()}
