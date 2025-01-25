@@ -13,9 +13,10 @@ import BoutonSupprimer from "./BoutonSupprimer"
 
 interface AlerteProps {
     texte: string;
+    Supprimer: () => void;
   }
 
-const Alerte = ({ texte }: AlerteProps) => {
+const Alerte = ({ texte , Supprimer }: AlerteProps) => {
   return (
     <>
    <AlertDialog>
@@ -28,8 +29,8 @@ const Alerte = ({ texte }: AlerteProps) => {
       </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
-      <AlertDialogCancel>Annuler</AlertDialogCancel>
-      <AlertDialogAction className="bg-red-500">Supprimer</AlertDialogAction>
+      <AlertDialogCancel className="hover:bg-gray-300">Annuler</AlertDialogCancel>
+      <AlertDialogAction onClick={Supprimer} className="bg-red-500 hover:bg-red-400">Supprimer</AlertDialogAction>
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>

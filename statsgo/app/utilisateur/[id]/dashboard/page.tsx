@@ -43,7 +43,6 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
    queryKey: ['utilisateur', routeParams.id],
    queryFn: async () => {
      const response = await axios.get<ResponseData>(`/api/utilisateurs/${routeParams.id}/`);
-     console.log( response.data)
      return response.data;
    }
  });
@@ -88,7 +87,7 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
              <div key={depense.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
                <div className="font-bold text-red-600 flex justify-between">
                 <p>-{depense.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="depense" ></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="depense" Supprimer={() => console.log("Test dépenses")} ></Alerte></p>
                </div>
                <p>Description de la dépense : {depense.description}</p>
                <p className="text-sm text-gray-500">
@@ -106,7 +105,7 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
              <div key={revenu.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
               <div className="font-bold text-green-500 flex justify-between">
                 <p>-{revenu.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="revenu"></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="revenu" Supprimer={() => console.log("Test Revenus")}></Alerte></p>
                </div>
                <p>Description du revenu  : {revenu.description}</p>
                <p className="text-sm text-gray-500">
