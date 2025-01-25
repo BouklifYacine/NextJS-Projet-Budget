@@ -11,7 +11,11 @@ import {
   } from "@/components/ui/alert-dialog"
 import BoutonSupprimer from "./BoutonSupprimer"
 
-const Alerte = ({texte}) => {
+interface AlerteProps {
+    texte: string;
+  }
+
+const Alerte = ({ texte }: AlerteProps) => {
   return (
     <>
    <AlertDialog>
