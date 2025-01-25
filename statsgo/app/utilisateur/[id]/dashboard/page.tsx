@@ -9,6 +9,7 @@ import Header from "@/components/header";
 import { redirect } from "next/navigation";
 import BoutonEdit from "@/components/BoutonEdit";
 import BoutonSupprimer from "@/components/BoutonSupprimer";
+import Alerte, { DeleteDialog } from "@/components/alert";
 
 interface Params {
  id: string;
@@ -60,6 +61,10 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
 
  const utilisateur = { name: session?.user?.name || session?.user?.email || 'Utilisateur' };
 
+  function handleDelete(id: any) {
+    throw new Error("Function not implemented.");
+  }
+
  return (
    <div className="p-6">
  <Header session={session} utilisateur={utilisateur} />
@@ -84,10 +89,10 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
          <h2 className="text-xl font-bold mb-4">Dernières Dépenses</h2>
          <div className="space-y-2">
            {depenses.map((depense) => (
-             <div key={depense.id} className="bg-white p-4 rounded-2xl border-2 border-gray-400 shadow">
+             <div key={depense.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
                <div className="font-bold text-red-600 flex justify-between">
                 <p>-{depense.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <BoutonSupprimer /></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="depense"></Alerte></p>
                </div>
                <p>Description de la dépense : {depense.description}</p>
                <p className="text-sm text-gray-500">
@@ -101,11 +106,11 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
        <div>
          <h2 className="text-xl font-bold mb-4">Derniers Revenus</h2>
          <div className="space-y-2">
-           {revenus.slice(0, 5).map((revenu) => (
-             <div key={revenu.id} className="bg-white p-4 rounded-lg shadow">
+           {revenus.map((revenu) => (
+             <div key={revenu.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
               <div className="font-bold text-green-500 flex justify-between">
                 <p>-{revenu.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <BoutonSupprimer /></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="revenu"></Alerte></p>
                </div>
                <p>Description du revenu  : {revenu.description}</p>
                <p className="text-sm text-gray-500">
