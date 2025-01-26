@@ -9,6 +9,7 @@ import Header from "@/components/header";
 import { redirect } from "next/navigation";
 import BoutonEdit from "@/components/BoutonEdit";
 import Alerte from "@/components/alert";
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Params {
  id: string;
@@ -48,6 +49,13 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
    }
  });
 
+ const NotifDepenseSupprimer = () => toast.success("Votre dépense vient d'etre supprimé ", {
+  position : "top-center", duration: 3000,
+});
+const NotifRevenuSupprimer = () => toast.success("Votre revenu vient d'etre supprimé " , {
+  position : "top-center" , duration : 3000
+});
+
  const SupprimerDepenses = useMutation({
   mutationFn: (id: number) => 
     axios.delete(`/api/utilisateurs/${routeParams.id}/depenses/${id}`), 
@@ -55,15 +63,19 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
     queryClient.invalidateQueries({ 
       queryKey: ['utilisateur', routeParams.id] 
     });
+    NotifDepenseSupprimer()
   }
 });
 
+
+
 const SupprimerRevenus = useMutation({
-  mutationFn : (id : number) => axios.delete(`/api/utilisateurs/${routeParams.id}/revenus/${id}`),
+  mutationFn : (id : number) => axios.delete(`/api/utilisateurs/${routeParams.id}/revenus/${id}`) ,
   onSuccess : () => {
     queryClient.invalidateQueries({
       queryKey : ["utilisateur" , routeParams.id]
     })
+    NotifRevenuSupprimer()
   }
 })
 
@@ -77,6 +89,8 @@ const SupprimerRevenus = useMutation({
  const balance = totalRevenus - totalDepenses;
  const nombredepenses = depenses.length
  const nombrerevenu = revenus.length
+
+
 
  const utilisateur = { name: session?.user?.name || session?.user?.email || 'Utilisateur' };
 
@@ -136,6 +150,7 @@ const SupprimerRevenus = useMutation({
          </div>
        </div>
      </div>
+     <Toaster />
    </div>
  );
 }
