@@ -10,7 +10,7 @@ import {
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
 
-import BoutonEdit from './BoutonEdit';
+import BoutonEdit from './BoutonEditRevenu';
 
 interface AlerteProps {
     texte: string;
@@ -21,7 +21,7 @@ const AlerteModifier = ({ texte , Supprimer }: AlerteProps) => {
   return (
     <>
    <AlertDialog>
-  <AlertDialogTrigger><BoutonEdit></BoutonEdit></AlertDialogTrigger>
+  <AlertDialogTrigger></AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle>Voulez vous vraiment supprimer votre {texte} ?  </AlertDialogTitle>

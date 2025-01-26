@@ -7,12 +7,14 @@ import { MoveDown, MoveUp } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Header from "@/components/header";
 import { redirect } from "next/navigation";
-import BoutonEdit from "@/components/BoutonEdit";
+import BoutonEdit from "@/components/BoutonEditRevenu";
 import Alerte from "@/components/alert";
 import toast, { Toaster } from 'react-hot-toast';
 import AlerteModifier from "@/components/AlerteModifier";
 import AjouterDesRevenus from "@/components/BoutonAjouterRevenu";
 import AjouterDesDepenses from "@/components/BoutonAjouterDepense";
+import BoutonEditRevenus from "@/components/BoutonEditRevenu";
+import BoutonEditDepenses from "@/components/BoutonEditDepenses";
 
 interface Params {
  id: string;
@@ -127,7 +129,7 @@ const SupprimerRevenus = useMutation({
              <div key={depense.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
                <div className="font-bold text-red-600 flex justify-between">
                 <p>-{depense.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><AlerteModifier texte="depense" Supprimer={() => SupprimerDepenses.mutate(depense.id)} /> <Alerte texte="depense" Supprimer={() => SupprimerDepenses.mutate(depense.id)} ></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEditDepenses  id={routeParams.id} depenseid={depense.id}></BoutonEditDepenses> <Alerte texte="depense" Supprimer={() => SupprimerDepenses.mutate(depense.id)} ></Alerte></p>
                </div>
                <p>Description de la dépense : {depense.description}</p>
                <p className="text-sm text-gray-500">
@@ -148,7 +150,7 @@ const SupprimerRevenus = useMutation({
              <div key={revenu.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
               <div className="font-bold text-green-500 flex justify-between">
                 <p>-{revenu.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit  /> <Alerte texte="revenu" Supprimer={() => SupprimerRevenus.mutate(revenu.id)}></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEditRevenus id={routeParams.id} revenuid={revenu.id} /> <Alerte texte="revenu" Supprimer={() => SupprimerRevenus.mutate(revenu.id)}></Alerte></p>
                </div>
                <p>Description du revenu  : {revenu.description}</p>
                <p className="text-sm text-gray-500">
