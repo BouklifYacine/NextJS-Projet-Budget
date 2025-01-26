@@ -50,10 +50,10 @@ export default function DashboardPage({ params }: { params: Promise<Params> }) {
  });
 
  const NotifDepenseSupprimer = () => toast.success("Votre dépense vient d'etre supprimé ", {
-  position : "top-center", duration: 3000,
+  position : "top-center", duration: 3000,  style : {color : "#10B981"}
 });
 const NotifRevenuSupprimer = () => toast.success("Votre revenu vient d'etre supprimé " , {
-  position : "top-center" , duration : 3000
+  position : "top-center" , duration : 3000 , style : {color : "#10B981"}
 });
 
  const SupprimerDepenses = useMutation({
