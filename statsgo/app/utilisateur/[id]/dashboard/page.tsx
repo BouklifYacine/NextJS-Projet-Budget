@@ -13,6 +13,7 @@ import AjouterDesRevenus from "@/components/BoutonAjouterRevenu";
 import AjouterDesDepenses from "@/components/BoutonAjouterDepense";
 import BoutonEditRevenus from "@/components/BoutonEditRevenu";
 import BoutonEditDepenses from "@/components/BoutonEditDepenses";
+import Link from "next/link";
 
 interface Params {
  id: string;
@@ -127,7 +128,7 @@ const SupprimerRevenus = useMutation({
              <div key={depense.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
                <div className="font-bold text-red-600 flex justify-between">
                 <p>-{depense.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEditDepenses  id={routeParams.id} depenseid={depense.id}></BoutonEditDepenses> <Alerte texte="depense" Supprimer={() => SupprimerDepenses.mutate(depense.id)} ></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"> <Link href={{pathname : `/utilisateur/${routeParams.id}/depenses/${depense.id}` , query : { id : routeParams.id, iddepense : depense.id}}}> <BoutonEditDepenses  ></BoutonEditDepenses></Link> <Alerte texte="depense" Supprimer={() => SupprimerDepenses.mutate(depense.id)} ></Alerte></p>
                </div>
                <p>Description de la dépense : {depense.description}</p>
                <p className="text-sm text-gray-500">
@@ -148,7 +149,7 @@ const SupprimerRevenus = useMutation({
              <div key={revenu.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
               <div className="font-bold text-green-500 flex justify-between">
                 <p>-{revenu.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEditRevenus id={routeParams.id} revenuid={revenu.id} /> <Alerte texte="revenu" Supprimer={() => SupprimerRevenus.mutate(revenu.id)}></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"> <Link href={{ pathname : `/utilisateur/${routeParams.id}/revenus/${revenu.id}` , query : { id : routeParams.id, revenuid : revenu.id}}}> <BoutonEditRevenus /> </Link> <Alerte texte="revenu" Supprimer={() => SupprimerRevenus.mutate(revenu.id)}></Alerte></p>
                </div>
                <p>Description du revenu  : {revenu.description}</p>
                <p className="text-sm text-gray-500">
