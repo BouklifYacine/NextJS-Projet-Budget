@@ -11,6 +11,8 @@ import BoutonEdit from "@/components/BoutonEdit";
 import Alerte from "@/components/alert";
 import toast, { Toaster } from 'react-hot-toast';
 import AlerteModifier from "@/components/AlerteModifier";
+import AjouterDesRevenus from "@/components/BoutonAjouterRevenu";
+import AjouterDesDepenses from "@/components/BoutonAjouterDepense";
 
 interface Params {
  id: string;
@@ -116,7 +118,10 @@ const SupprimerRevenus = useMutation({
 
      <div className="grid md:grid-cols-2 gap-6">
        <div>
-         <h2 className="text-xl font-bold mb-4">Dernières Dépenses</h2>
+       <div className="flex items-center gap-4 mb-2">
+         <h2 className="text-xl font-bold ">Dernières dépenses</h2>
+         <AjouterDesDepenses userId={routeParams.id} />
+         </div>
          <div className="space-y-2">
            {depenses.map((depense) => (
              <div key={depense.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
@@ -134,13 +139,16 @@ const SupprimerRevenus = useMutation({
        </div>
 
        <div>
-         <h2 className="text-xl font-bold mb-4">Derniers Revenus</h2>
+         <div className="flex items-center gap-4 mb-2">
+         <h2 className="text-xl font-bold ">Derniers Revenus</h2>
+         <AjouterDesRevenus userId={routeParams.id} />
+         </div>
          <div className="space-y-2">
            {revenus.map((revenu) => (
              <div key={revenu.id} className="bg-white p-4 rounded-2xl border border-gray-400 shadow">
               <div className="font-bold text-green-500 flex justify-between">
                 <p>-{revenu.prix}€</p>
-                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit /> <Alerte texte="revenu" Supprimer={() => SupprimerRevenus.mutate(revenu.id)}></Alerte></p>
+                <p className="flex gap-x-3 cursor-pointer"><BoutonEdit  /> <Alerte texte="revenu" Supprimer={() => SupprimerRevenus.mutate(revenu.id)}></Alerte></p>
                </div>
                <p>Description du revenu  : {revenu.description}</p>
                <p className="text-sm text-gray-500">
