@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import FormulairePatchDepense from "./FormulairePatchDepense";
 
@@ -17,7 +16,7 @@ export default async function DepensePage({
   searchParams: SearchParams["searchParams"];
 }) {
   const session = await auth();
-  if (!session || !session.user) {
+  if (!session) {
     redirect("/");
   }
 

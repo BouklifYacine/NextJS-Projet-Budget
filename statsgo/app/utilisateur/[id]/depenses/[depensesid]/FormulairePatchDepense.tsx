@@ -79,6 +79,7 @@ export default function FormulairePatchDepense({
                 {...register("prix", {
                   valueAsNumber: true,
                 })}
+                defaultValue={depense?.prix}
                 type="number"
                 className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Votre prix"
@@ -100,6 +101,7 @@ export default function FormulairePatchDepense({
               />
               <input
                 {...register("description")}
+                defaultValue={depense?.description}
                 type="text"
                 className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Description"
