@@ -14,6 +14,8 @@ import AjouterDesDepenses from "@/components/BoutonAjouterDepense";
 import BoutonEditRevenus from "@/components/BoutonEditRevenu";
 import BoutonEditDepenses from "@/components/BoutonEditDepenses";
 import Link from "next/link";
+import {Chart as ChartJS, Tooltip, Legend, ArcElement} from "chart.js"
+import { Pie } from "react-chartjs-2"
 
 interface Params {
  id: string;
@@ -37,6 +39,8 @@ interface ResponseData {
  depenses: Depense[];
  revenus: Revenu[];
 }
+
+ChartJS.register(Tooltip,Legend,ArcElement)
 
 export default function DashboardPage({ params }: { params: Promise<Params> }) {
  const routeParams = use(params) as Params;
@@ -94,6 +98,8 @@ const SupprimerRevenus = useMutation({
  const nombredepenses = depenses.length
  const nombrerevenu = revenus.length
 
+ const budget = [totalDepenses, totalRevenus, balance]
+ console.log(budget)
 
 
  const utilisateur = { name: session?.user?.name || session?.user?.email || 'Utilisateur' };
@@ -161,6 +167,17 @@ const SupprimerRevenus = useMutation({
        </div>
      </div>
      <Toaster />
+     <div className="mt-10">
+     { budget &&    <Pie  data={{
+      labels : ["Revenus, Dépenses , Balance"], 
+      datasets : [{
+        label : "Budget", 
+        data : [totalRevenus, totalDepenses, balance], 
+        backgroundColor : ["#d1d5db" , "#dc2626" , "#22c55e"]
+      }]
+     }}></Pie>}
+     </div>
+
    </div>
  );
 }
